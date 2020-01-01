@@ -32,10 +32,11 @@ def dataclass_plus(cls=None, /, *, init=True, repr=True, eq=True, order=False,
     return wrap(cls)
 
 
-def _validate_dict(value, target_type):
+def _validate_dict(value: Any, target_type: Any) -> bool:
     if not isinstance(value, dict):
         return False
-    results = [True]
+    results = []
+    # List comprehension is not used because it has more performance in this way
     for key, val in value.items():
         if isinstance(target_type.__args__[0], typing._GenericAlias):
             _is_valid(val, target_type.__args__[0])
@@ -45,30 +46,26 @@ def _validate_dict(value, target_type):
             isinstance(key, target_type.__args__[0]) and
             isinstance(val, target_type.__args__[1]))
     return all(results)
-    # return all(
-    #     isinstance(key, target_type_args[0]) and
-    #     isinstance(val, target_type_args[1])
-    #     for key, val in value.items()
-    # )
 
 
-def _validate_list(value, target_type):
+def _validate_list(value: Any, target_type: Any) -> bool:
     if not isinstance(value, list):
         return False
-    results = [True]
+    results = []
+    # List comprehension is not used because it has more performance in this way
     for val in value:
         if isinstance(target_type.__args__[0], typing._GenericAlias):
             _is_valid(val, target_type.__args__[0])
         else:
             results.append(isinstance(val, target_type.__args__[0]))
     return all(results)
-    # return all(isinstance(val, target_type_args[0]) for val in value)
 
 
-def _validate_tuple(value, target_type):
+def _validate_tuple(value: Any, target_type: Any) -> bool:
     if not isinstance(value, tuple):
         return False
-    results = [True]
+    results = []
+    # List comprehension is not used because it has more performance in this way
     for index, val in enumerate(value):
         if isinstance(target_type.__args__[index], typing._GenericAlias):
             _is_valid(val, target_type.__args__[index])
