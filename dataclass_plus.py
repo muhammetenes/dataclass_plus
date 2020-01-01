@@ -33,6 +33,9 @@ def dataclass_plus(cls=None, /, *, init=True, repr=True, eq=True, order=False,
 
 
 def _validate_dict(value: Any, target_type: Any) -> bool:
+    """
+    Validate typing.Dict
+    """
     if not isinstance(value, dict):
         return False
     results = []
@@ -49,6 +52,9 @@ def _validate_dict(value: Any, target_type: Any) -> bool:
 
 
 def _validate_list(value: Any, target_type: Any) -> bool:
+    """
+    Validate typing.List
+    """
     if not isinstance(value, list):
         return False
     results = []
@@ -62,6 +68,9 @@ def _validate_list(value: Any, target_type: Any) -> bool:
 
 
 def _validate_tuple(value: Any, target_type: Any) -> bool:
+    """
+    Validate typing.Tuple
+    """
     if not isinstance(value, tuple):
         return False
     results = []
@@ -86,6 +95,9 @@ typing_mapping = {
 
 
 def _is_valid(value: Any, target_type: Any) -> bool:
+    """
+    Validate value
+    """
     if isinstance(target_type, type):
         result = isinstance(value, target_type)
     else:
