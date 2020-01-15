@@ -4,7 +4,7 @@ from dataclasses import asdict, fields, MISSING, _process_class
 from typing import Any
 
 
-def dataclass_plus(cls=None, /, *, init=True, repr=True, eq=True, order=False,
+def dataclass_plus(cls=None, init=True, repr=True, eq=True, order=False,
               unsafe_hash=False, frozen=False):
     """Returns the same class as was passed in, with dunder methods
     added based on the fields defined in the class.

@@ -3,6 +3,11 @@
 The `dataclass_plus` is a fastest type validation library for the `dataclass`
 
 
+## Install
+```
+pip install dataclass-plus
+```
+
 ## Example
 
 
