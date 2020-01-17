@@ -1,4 +1,6 @@
 # dataclass_plus
+[![Python 3.6](https://img.shields.io/badge/python-3.6-brightgreen.svg)](https://www.python.org/downloads/release/python-360)
+[![pypi](https://badge.fury.io/py/dataclass-plus.svg)](https://badge.fury.io/py/dataclass-plus)
 
 The `dataclass_plus` is a fastest type validation library for the `dataclass`
 
