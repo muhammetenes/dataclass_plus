@@ -37,6 +37,8 @@ def read_version():
         raise RuntimeError("Cannot find version in dataclass_plus/__init__.py")
 
 
+tests_require = ["pytest"]
+
 # Where the magic happens:
 setup(
     name=NAME,
@@ -48,7 +50,7 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    packages=find_packages(exclude=("tests", "tests")),
+    tests_require=tests_require,
     install_requires=REQUIRED,
     include_package_data=True,
     license="Apache 2",
