@@ -9,6 +9,7 @@ import re
 
 from setuptools import find_packages, setup
 
+
 # Package meta-data.
 NAME = "dataclass_plus"
 DESCRIPTION = "The dataclass_plus is a fastest type validation library for the dataclass"
@@ -24,6 +25,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 with io.open(os.path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = "\n" + f.read()
 
+
 def read_version():
     regexp = re.compile(r'^__version__\W*=\W*"(\d+.\d+.\d+)"')
     init_py = os.path.join(os.path.dirname(__file__), "dataclass_plus/__init__.py")
@@ -33,6 +35,7 @@ def read_version():
             if match is not None:
                 return match.group(1)
         raise RuntimeError("Cannot find version in dataclass_plus/__init__.py")
+
 
 # Where the magic happens:
 setup(
@@ -62,8 +65,3 @@ setup(
         "License :: OSI Approved :: Apache Software License",
     ],
 )
-
-
-
-
-
