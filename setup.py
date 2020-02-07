@@ -16,7 +16,7 @@ DESCRIPTION = "The dataclass_plus is a fastest type validation library for the d
 URL = "https://github.com/muhammetenes/dataclass_plus"
 EMAIL = "muhammetenesak@gmail.com"
 AUTHOR = "Muhammet Enes Aksu"
-REQUIRES_PYTHON = ">=3.6.0"
+REQUIRES_PYTHON = ">=3.7.0"
 
 REQUIRED = []
 
