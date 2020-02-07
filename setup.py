@@ -7,7 +7,7 @@ import io
 import os
 import re
 
-from setuptools import setup
+from setuptools import find_packages, setup
 
 
 # Package meta-data.
@@ -50,6 +50,7 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
+    packages=find_packages(exclude=("tests", "tests")),
     tests_require=tests_require,
     install_requires=REQUIRED,
     include_package_data=True,
