@@ -6,5 +6,6 @@ os:
   - linux
 install:
   - pip install flake8
+  - pip install -r requirements/ci.txt
 script:
-  - flake8
+  - make cov
