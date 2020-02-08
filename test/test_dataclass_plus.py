@@ -148,3 +148,97 @@ def test_nested_typing_dict_wrong_dict_type_validator():
 
     with pytest.raises(ValueError):
         assert TypingDictDataclass(typing_dict={1: [1, 2]})
+
+
+def test_typing_tuple_str_validator():
+    @dataclass_plus
+    class TypingTupleStringDataclass:
+        typing_tuple: typing.Tuple[str]
+
+    assert TypingTupleStringDataclass(typing_tuple=("",))
+
+
+def test_typing_tuple_str_wrong_type_validator():
+    @dataclass_plus
+    class TypingTupleStringDataclass:
+        typing_tuple: typing.Tuple[str]
+
+    with pytest.raises(ValueError):
+        assert TypingTupleStringDataclass(typing_tuple=(1,))
+
+
+def test_typing_tuple_int_validator():
+    @dataclass_plus
+    class TypingTupleIntDataclass:
+        typing_tuple: typing.Tuple[int]
+
+    assert TypingTupleIntDataclass(typing_tuple=(1,))
+
+
+def test_typing_tuple_int_wrong_type_validator():
+    @dataclass_plus
+    class TypingTupleIntDataclass:
+        typing_tuple: typing.Tuple[int]
+
+    with pytest.raises(ValueError):
+        assert TypingTupleIntDataclass(typing_tuple=("test",))
+
+
+def test_typing_tuple_wrong_type_validator():
+    @dataclass_plus
+    class TypingTupleIntDataclass:
+        typing_tuple: typing.Tuple[int]
+
+    with pytest.raises(ValueError):
+        assert TypingTupleIntDataclass(typing_tuple=1)
+
+
+def test_typing_tuple_int_str_validator():
+    @dataclass_plus
+    class TypingTupleIntDataclass:
+        typing_tuple: typing.Tuple[int, str]
+
+    assert TypingTupleIntDataclass(typing_tuple=(1, "test"))
+
+
+def test_typing_tuple_int_str_wrong_type_validator():
+    @dataclass_plus
+    class TypingTupleIntDataclass:
+        typing_tuple: typing.Tuple[int, str]
+
+    with pytest.raises(ValueError):
+        assert TypingTupleIntDataclass(typing_tuple=("test", 1))
+
+
+def test_typing_tuple_int_typing_list_validator():
+    @dataclass_plus
+    class TypingTupleIntDataclass:
+        typing_tuple: typing.Tuple[int, typing.List[str]]
+
+    assert TypingTupleIntDataclass(typing_tuple=(1, ["test"]))
+
+
+def test_typing_tuple_int_typing_list_wrong_type_validator():
+    @dataclass_plus
+    class TypingTupleIntDataclass:
+        typing_tuple: typing.Tuple[int, typing.List[str]]
+
+    with pytest.raises(ValueError):
+        assert TypingTupleIntDataclass(typing_tuple=(1, 1))
+
+
+def test_typing_any_type_validator():
+    @dataclass_plus
+    class TypingAnyDataclass:
+        typing_any: typing.Any
+
+    assert TypingAnyDataclass(typing_any="test")
+
+
+def test_typing_any_str_type_validator():
+    @dataclass_plus
+    class TypingAnyDataclass:
+        typing_any: typing.AnyStr
+
+    assert TypingAnyDataclass(typing_any=b"test")
+    assert TypingAnyDataclass(typing_any="test")
