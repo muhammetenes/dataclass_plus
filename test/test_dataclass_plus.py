@@ -59,6 +59,41 @@ def test_typing_list_string_validator():
         assert TypingListStringDataclass(typing_list=[1])
 
 
+def test_typing_list_int_wrong_type_validator():
+    @dataclass_plus
+    class TypingListStringDataclass:
+        typing_list: typing.List[str]
+
+    with pytest.raises(ValueError):
+        assert TypingListStringDataclass(typing_list=1)
+
+
+def test_nested_typing_list_int_wrong_type_validator():
+    @dataclass_plus
+    class TypingListStringDataclass:
+        typing_list: typing.List[typing.List[str]]
+
+    with pytest.raises(ValueError):
+        assert TypingListStringDataclass(typing_list=1)
+
+
+def test_nested_typing_list_in_list_int_wrong_type_validator():
+    @dataclass_plus
+    class TypingListStringDataclass:
+        typing_list: typing.List[typing.List[str]]
+
+    with pytest.raises(ValueError):
+        assert TypingListStringDataclass(typing_list=[[1]])
+
+
+def test_nested_typing_list_in_list_str_validator():
+    @dataclass_plus
+    class TypingListStringDataclass:
+        typing_list: typing.List[typing.List[str]]
+
+    assert TypingListStringDataclass(typing_list=[["test"]])
+
+
 def test_typing_dict_string_validator():
     @dataclass_plus
     class TypingDictStringDataclass:
@@ -70,3 +105,46 @@ def test_typing_dict_string_validator():
     assert isinstance(typing_dict_string_dataclass.typing_dict["test"], str)
     with pytest.raises(ValueError):
         assert TypingDictStringDataclass(typing_dict={1: 1})
+
+
+def test_typing_dict_wrong_type_validator():
+    @dataclass_plus
+    class TypingDictDataclass:
+        typing_dict: typing.Dict[str, str]
+    with pytest.raises(ValueError):
+        assert TypingDictDataclass(typing_dict=1)
+
+
+def test_nested_typing_dict_list_type_validator():
+    @dataclass_plus
+    class TypingDictDataclass:
+        typing_dict: typing.Dict[str, typing.List[int]]
+
+    assert TypingDictDataclass(typing_dict={"test": [1]})
+
+
+def test_nested_typing_dict_wrong_int_type_validator():
+    @dataclass_plus
+    class TypingDictDataclass:
+        typing_dict: typing.Dict[str, typing.List[int]]
+
+    with pytest.raises(ValueError):
+        assert TypingDictDataclass(typing_dict={"a": 1})
+
+
+def test_nested_typing_dict_wrong_str_type_validator():
+    @dataclass_plus
+    class TypingDictDataclass:
+        typing_dict: typing.Dict[str, typing.List[int]]
+
+    with pytest.raises(ValueError):
+        assert TypingDictDataclass(typing_dict={"a": "asd"})
+
+
+def test_nested_typing_dict_wrong_dict_type_validator():
+    @dataclass_plus
+    class TypingDictDataclass:
+        typing_dict: typing.Dict[str, typing.List[int]]
+
+    with pytest.raises(ValueError):
+        assert TypingDictDataclass(typing_dict={1: [1, 2]})

@@ -43,13 +43,17 @@ def _validate_dict(value: Any, target_type: Any) -> bool:
     results = []
     # List comprehension is not used because it has more performance in this way
     for key, val in value.items():
-        if isinstance(target_type.__args__[0], typing._GenericAlias):
+        key_origin_type = target_type.__args__[0]
+        val_origin_type = target_type.__args__[1]
+        if isinstance(key_origin_type, typing._GenericAlias):
             _is_valid(val, target_type.__args__[0])
-        elif isinstance(target_type.__args__[1], typing._GenericAlias):
+            key_origin_type = key_origin_type.__origin__
+        elif isinstance(val_origin_type, typing._GenericAlias):
             _is_valid(val, target_type.__args__[1])
+            val_origin_type = val_origin_type.__origin__
         results.append(
-            isinstance(key, target_type.__args__[0]) and
-            isinstance(val, target_type.__args__[1]))
+            isinstance(key, key_origin_type) and
+            isinstance(val, val_origin_type))
     return all(results)
 
 
