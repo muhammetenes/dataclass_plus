@@ -89,14 +89,28 @@ def _validate_tuple(value: Any, target_type: Any) -> bool:
     return all(results)
 
 
+def _validate_any_str(value: Any, target_type: Any) -> bool:
+    return isinstance(value, str) or isinstance(value, bytes)
+
+
+def _validate_any(value: Any, target_type: Any) -> bool:
+    return True
+
+
 def get_validate_func(type):
-    return typing_mapping.get(type)
+    try:
+        target_type = type._name
+    except AttributeError:
+        target_type = str(type)
+    return typing_mapping.get(target_type)
 
 
 typing_mapping = {
     "List": _validate_list,
     "Dict": _validate_dict,
-    "Tuple": _validate_tuple
+    "Tuple": _validate_tuple,
+    "~AnyStr": _validate_any_str,
+    "Any": _validate_any
 }
 
 
@@ -107,7 +121,7 @@ def _is_valid(value: Any, target_type: Any) -> bool:
     if isinstance(target_type, type):
         result = isinstance(value, target_type)
     else:
-        validate_func = get_validate_func(target_type._name)
+        validate_func = get_validate_func(target_type)
         result = validate_func(value, target_type)
 
     if result:
