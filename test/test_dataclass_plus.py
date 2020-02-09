@@ -132,6 +132,31 @@ def test_nested_typing_dict_wrong_int_type_validator():
         assert TypingDictDataclass(typing_dict={"a": 1})
 
 
+def test_nested_typing_dict_any_list_type_validator():
+    @dataclass_plus
+    class TypingDictDataclass:
+        typing_dict: typing.Dict[typing.Any, typing.List[int]]
+
+    assert TypingDictDataclass(typing_dict={"test": [1]})
+
+
+def test_nested_typing_dict_anystr_list_type_validator():
+    @dataclass_plus
+    class TypingDictDataclass:
+        typing_dict: typing.Dict[typing.AnyStr, typing.List[int]]
+
+    assert TypingDictDataclass(typing_dict={b"test": [1]})
+
+
+def test_nested_typing_dict_anystr_wrong_type_validator():
+    @dataclass_plus
+    class TypingDictDataclass:
+        typing_dict: typing.Dict[typing.AnyStr, typing.List[int]]
+
+    with pytest.raises(ValueError):
+        assert TypingDictDataclass(typing_dict={1: [1]})
+
+
 def test_nested_typing_dict_wrong_str_type_validator():
     @dataclass_plus
     class TypingDictDataclass:
@@ -235,10 +260,67 @@ def test_typing_any_type_validator():
     assert TypingAnyDataclass(typing_any="test")
 
 
-def test_typing_any_str_type_validator():
+def test_typing_any_str_byte_type_validator():
     @dataclass_plus
     class TypingAnyDataclass:
         typing_any: typing.AnyStr
 
     assert TypingAnyDataclass(typing_any=b"test")
+
+
+def test_typing_any_str_str_type_validator():
+    @dataclass_plus
+    class TypingAnyDataclass:
+        typing_any: typing.AnyStr
+
     assert TypingAnyDataclass(typing_any="test")
+
+
+def test_typing_any_str_int_type_validator():
+    @dataclass_plus
+    class TypingAnyDataclass:
+        typing_any: typing.AnyStr
+
+    with pytest.raises(ValueError):
+        assert TypingAnyDataclass(typing_any=1)
+
+
+def test_to_dict():
+    @dataclass_plus
+    class ToDictDataclass:
+        integer: int
+        string: str
+        list_type: list
+        dict_type: dict
+        tuple_type: tuple
+        typing_list: typing.List[str]
+        typing_dict: typing.Dict[str, str]
+        typing_tuple: typing.Tuple[str]
+        typing_any: typing.Any
+        typing_anystr: typing.AnyStr
+
+    dc = ToDictDataclass(
+        integer=1,
+        string="",
+        list_type=[],
+        dict_type={},
+        tuple_type=(),
+        typing_list=[""],
+        typing_dict={"": ""},
+        typing_tuple=("",),
+        typing_any="",
+        typing_anystr=b""
+    )
+    result = {
+        "integer": 1,
+        "string": "",
+        "list_type": [],
+        "dict_type": {},
+        "tuple_type": (),
+        "typing_list": [""],
+        "typing_dict": {"": ""},
+        "typing_tuple": ("",),
+        "typing_any": "",
+        "typing_anystr": b""
+    }
+    assert dc.to_dict() == result
