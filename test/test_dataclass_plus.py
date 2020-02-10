@@ -324,3 +324,18 @@ def test_to_dict():
         "typing_anystr": b""
     }
     assert dc.to_dict() == result
+
+
+def test_default_post_init_control():
+    @dataclass_plus
+    class PostInitDataclass:
+        a: int
+        b: str
+
+        def __post_init__(self, *args, **kwargs):
+            self.a = 2
+            self.b = "test_2"
+
+    dc = PostInitDataclass(a=1, b="test")
+
+    assert dc.a == 2 and dc.b == "test_2"
