@@ -1,4 +1,4 @@
-__version__ = "1.0.6"
+__version__ = "1.0.7"
 
 import typing
 
@@ -134,7 +134,7 @@ def _is_valid(value: Any, target_type: Any) -> bool:
     if result:
         return True
     else:
-        raise ValueError(f"{value} is not {target_type}")
+        raise TypeError(f"{value} is not {target_type}")
 
 
 class BaseValidator:
