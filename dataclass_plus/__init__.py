@@ -23,7 +23,12 @@ def dataclass_plus(cls=None, init=True, repr=True, eq=True, order=False,
     """
 
     def wrap(cls):
+        try:
+            original_post_init = cls.__post_init__
+        except AttributeError:
+            original_post_init = BaseValidator.__original_post_init__
         setattr(cls, "__post_init__", BaseValidator.__post_init__)
+        setattr(cls, "__original_post_init__", original_post_init)
         setattr(cls, "to_dict", BaseValidator.to_dict)
         return _process_class(cls, init, repr, eq, order, unsafe_hash, frozen)
 
@@ -134,7 +139,7 @@ def _is_valid(value: Any, target_type: Any) -> bool:
 
 class BaseValidator:
 
-    def __post_init__(self):
+    def __post_init__(self, *args, **kwargs):
         for field in fields(self):
             if field.default != MISSING:
                 default_value = field.default
@@ -145,6 +150,10 @@ class BaseValidator:
 
             if default_value is not None or getattr(self, field.name) is not None:
                 _is_valid(getattr(self, field.name), field.type)
+        self.__original_post_init__(*args, **kwargs)
+
+    def __original_post_init__(self, *args, **kwargs):
+        pass
 
     def to_dict(self) -> dict:
         return asdict(self)
