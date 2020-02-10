@@ -45,6 +45,6 @@ Model(
     list_example=[1,2],
     tuple_example=("test", 1.2)
 )
-# => ValueError: {'test': 1} is not typing.Dict[str, str]
+# => TypeError: {'test': 1} is not typing.Dict[str, str]
 
 ```
