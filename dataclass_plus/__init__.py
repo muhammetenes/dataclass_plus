@@ -1,4 +1,4 @@
-__version__ = "1.0.7"
+__version__ = "1.0.8"
 
 import typing
 
@@ -71,10 +71,11 @@ def _validate_list(value: Any, target_type: Any) -> bool:
     results = []
     # List comprehension is not used because it has more performance in this way
     for val in value:
-        if isinstance(target_type.__args__[0], typing._GenericAlias):
-            _is_valid(val, target_type.__args__[0])
+        if not isinstance(target_type.__args__[0], type):
+            is_valid = _is_valid(val, target_type.__args__[0])
         else:
-            results.append(isinstance(val, target_type.__args__[0]))
+            is_valid = isinstance(val, target_type.__args__[0])
+        results.append(is_valid)
     return all(results)
 
 
@@ -87,10 +88,11 @@ def _validate_tuple(value: Any, target_type: Any) -> bool:
     results = []
     # List comprehension is not used because it has more performance in this way
     for index, val in enumerate(value):
-        if isinstance(target_type.__args__[index], typing._GenericAlias):
-            _is_valid(val, target_type.__args__[index])
+        if not isinstance(target_type.__args__[index], type):
+            is_valid = _is_valid(val, target_type.__args__[index])
         else:
-            results.append(type(val) is target_type.__args__[index])
+            is_valid = type(val) is target_type.__args__[index]
+        results.append(is_valid)
     return all(results)
 
 
