@@ -1,13 +1,15 @@
-__version__ = "1.0.4"
+__version__ = "1.0.5"
 
 import typing
 
 from dataclasses import asdict, fields, MISSING, _process_class
 from typing import Any
 
+from collections import defaultdict
+
 
 def dataclass_plus(cls=None, init=True, repr=True, eq=True, order=False,
-              unsafe_hash=False, frozen=False):
+                   unsafe_hash=False, frozen=False):
     """Returns the same class as was passed in, with dunder methods
     added based on the fields defined in the class.
 
@@ -100,16 +102,18 @@ def get_validate_func(type):
         target_type = type._name
     except AttributeError:
         target_type = str(type)
-    return typing_mapping.get(target_type)
+    return typing_mapping[target_type]
 
 
-typing_mapping = {
+mapping = {
     "List": _validate_list,
     "Dict": _validate_dict,
     "Tuple": _validate_tuple,
     "~AnyStr": _validate_any_str,
     "Any": _validate_any
 }
+
+typing_mapping = defaultdict(lambda: None, mapping)
 
 
 def _is_valid(value: Any, target_type: Any) -> bool:
@@ -144,5 +148,3 @@ class BaseValidator:
 
     def to_dict(self) -> dict:
         return asdict(self)
-
-
