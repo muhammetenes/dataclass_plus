@@ -77,3 +77,5 @@ Model(
 # => TypeError: [1, 'test'] is not typing.List[int]
 
 ```
+
+Note: Can use every feature of dataclass (Example: frozen=True, init=True ...)
