@@ -1,3 +1,5 @@
+from dataclasses import FrozenInstanceError
+
 import pytest
 import typing
 
@@ -389,3 +391,24 @@ def test_default_post_init_control():
     dc = PostInitDataclass(a=1, b="test")
 
     assert dc.a == 2 and dc.b == "test_2"
+
+
+def test_frozen_true_control():
+    @dataclass_plus(frozen=True)
+    class FrozenDataclass:
+        a: int
+        b: str
+
+    dc = FrozenDataclass(a=1, b="test")
+    with pytest.raises(FrozenInstanceError):
+        dc.a = 2
+
+
+def test_frozen_true_validation_control():
+    @dataclass_plus(frozen=True)
+    class FrozenDataclass:
+        a: int
+        b: str
+
+    with pytest.raises(TypeError):
+        FrozenDataclass(a="test", b=1)

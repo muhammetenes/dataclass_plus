@@ -23,13 +23,16 @@ def dataclass_plus(cls=None, init=True, repr=True, eq=True, order=False,
     """
 
     def wrap(cls):
-        try:
-            original_post_init = cls.__post_init__
-        except AttributeError:
-            original_post_init = BaseValidator.__original_post_init__
-        setattr(cls, "__post_init__", BaseValidator.__post_init__)
-        setattr(cls, "__original_post_init__", original_post_init)
         setattr(cls, "to_dict", BaseValidator.to_dict)
+        if frozen:
+            try:
+                original_post_init = cls.__post_init__
+            except AttributeError:
+                original_post_init = BaseValidator.__original_post_init__
+            setattr(cls, "__post_init__", BaseValidator.__post_init__)
+            setattr(cls, "__original_post_init__", original_post_init)
+        else:
+            setattr(cls, "__setattr__", BaseValidator.__setattr__)
         return _process_class(cls, init, repr, eq, order, unsafe_hash, frozen)
 
     # See if we're being called as @dataclass or @dataclass().
@@ -156,6 +159,11 @@ class BaseValidator:
 
     def __original_post_init__(self, *args, **kwargs):
         pass
+
+    def __setattr__(self, key, value):
+        if self.__dataclass_fields__[key].default is not None or value is not None:
+            _is_valid(value, self.__annotations__[key])
+        self.__dict__[key] = value
 
     def to_dict(self) -> dict:
         return asdict(self)
