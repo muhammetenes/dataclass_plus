@@ -1,6 +1,4 @@
-__version__ = "1.0.8"
-
-import typing
+__version__ = "2.0.0"
 
 from dataclasses import asdict, fields, MISSING, _process_class
 from typing import Any
