@@ -14,7 +14,7 @@ pip install dataclass-plus
 
 ## Example
 
-
+Basic Example
 ```python
 from dataclass_plus import dataclass_plus
 from typing import List, Dict, Tuple
@@ -37,6 +37,7 @@ Model(
     tuple_example=("test", 1.2)
 )
 # => Model(id=1, name='Test Test', dict_example={"test": "test"}, list_example=[1,2], tuple_example=("test", 1.2))
+
 # Invalid Model
 Model(
     id=1, 
@@ -46,5 +47,33 @@ Model(
     tuple_example=("test", 1.2)
 )
 # => TypeError: {'test': 1} is not typing.Dict[str, str]
+
+```
+
+Nested Example
+
+```python
+from dataclass_plus import dataclass_plus
+from typing import List, Dict, Tuple
+
+
+@dataclass_plus
+class Model:
+    nested_example: List[List[str]]
+    multi_nested_example: Dict[str, List[Tuple[str, List[int]]]]
+
+
+Model(
+    nested_example=[["test"], ["test_2"]],
+    multi_nested_example={"test": [("test",[1, 2])]}
+)
+# => Model(nested_example=[['test'], ['test_2']], multi_nested_example={'test': [('test', [1, 2])]})
+
+# Invalid Model
+Model(
+    nested_example=[["test"], ["test_2"]],
+    multi_nested_example={"test": [("test",[1, "test"])]}
+)
+# => TypeError: [1, 'test'] is not typing.List[int]
 
 ```
